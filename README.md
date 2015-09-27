@@ -33,7 +33,7 @@ Then just activate the plugin on a normal select box(suggest having a blank opti
 
 When activating the plugin, you may include an object containing options for the combobox
 
-    $('.combobox').combobox({bsVersion: '2'});
+    $('.combobox').combobox({fullWidthMenu: true});
 
  `menu`: Custom markup for the dropdown menu list element.
 
@@ -52,17 +52,30 @@ When activating the plugin, you may include an object containing options for the
  `fullWidthMenu`: if `true` the dropdown menu will be the full width of the input.  Defaults to `false`
  
  `placeholder`: Set the placeholder attribute of the input box, removed the `data-placeholder`  Defaults to an empty string.
+ 
+You may also include these options as data- options on the select element
 
- `bsVersion`: Version of bootstrap being used. This is used by the default `template` function to generate markup correctly. Defaults to '3'. Set to '2' for compatibility with Bootstrap 2
+    <select class="combobox" data-fullwidthmenu='true' data-openonelementclick='true'>
+      <option></option>
+      <option value="PA">Pennsylvania</option>
+      <option value="CT">Connecticut</option>
+      <option value="NY">New York</option>
+      <option value="MD">Maryland</option>
+      <option value="VA">Virginia</option>
+    </select>
 
+
+### API
+
+    $('.combobox').combobox('toggle');
+
+  `toggle` : toggle the menu
+   
+  `setValue` : set the value of the combo to the passed in value.  `$('.combobox').combobox('setValue', 'option1');`
+ 
 ## Dependencies
 Uses the latest 1.X version of jQuery and the 3.X of bootstrap.
 
-## Live Example
 
-### Bootstrap 2.0 Version
-http://dl.dropbox.com/u/21368/bootstrap-combobox/index.html
 
-### Bootstrap 3.0 Version
-http://bootstrap-combobox-test.herokuapp.com/
 
