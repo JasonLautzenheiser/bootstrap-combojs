@@ -25,7 +25,8 @@
  THE SOFTWARE.
  ============================================================ */
 
-;(function ($) {
+;
+(function ($) {
 	"use strict";
 	var $window = $(window);
 	var defaults = {
@@ -35,7 +36,7 @@
 		placeholder       : "",
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
 		item              : '<li><a href="#"></a></li>',
-		selectedValue			: ''
+		selectedValue     : ''
 	};
 
 	function combojs(element, options) {
@@ -54,7 +55,7 @@
 	combojs.prototype = {
 		constructor: combojs,
 
-		init: function() {
+		init: function () {
 			this.template = this.options.template || this.template;
 			this.$container = this.setup();
 			this.$element = this.$container.find('input[type=text]');
@@ -134,7 +135,7 @@
 			this.$source.removeAttr('name');  // Remove from source otherwise form will pass parameter twice.
 
 			var that = this, attributes = this.$source.prop('attributes');
-			$.each(attributes, function() {
+			$.each(attributes, function () {
 				if (this.name !== 'style')
 					that.$element.attr(this.name, this.value);
 			});
@@ -158,7 +159,22 @@
 			return item;
 		},
 
-		setValue: function(item) {
+		fixMenuScroll: function () {
+			var active = this.$menu.find('.active');
+			if (active.length) {
+				var top = active.position().top;
+				var bottom = top + active.height();
+				var scrollTop = this.$menu.scrollTop();
+				var menuHeight = this.$menu.height();
+				if (bottom > menuHeight) {
+					this.$menu.scrollTop(scrollTop + bottom - menuHeight);
+				} else if (top < 0) {
+					this.$menu.scrollTop(scrollTop + top);
+				}
+			}
+		},
+
+		setValue: function (item) {
 			var val = item;
 			var mapping = this.map[val];
 			if (mapping) {
@@ -393,11 +409,13 @@
 				case 38: // up arrow
 					e.preventDefault();
 					this.prev();
+					this.fixMenuScroll();
 					break;
 
 				case 40: // down arrow
 					e.preventDefault();
 					this.next();
+					this.fixMenuScroll();
 					break;
 			}
 
@@ -504,15 +522,16 @@
 		}
 	};
 
-	$.extend(combojs.prototype, {
-	})
+	$.extend(combojs.prototype, {})
 
-	$.fn.combojs = function(option) {
-		var args = Array.prototype.slice.call(arguments,1);
+	$.fn.combojs = function (option) {
+		var args = Array.prototype.slice.call(arguments, 1);
 
-		return this.each(function() {
-			var $this = $(this), options = typeof option == 'object' && option, data=$this.data('combojs');
-			if (!data) {$this.data('combojs', (data=new combojs(this,options)));}
+		return this.each(function () {
+			var $this = $(this), options = typeof option == 'object' && option, data = $this.data('combojs');
+			if (!data) {
+				$this.data('combojs', (data = new combojs(this, options)));
+			}
 			if (typeof option === 'string') {
 				var plugin = $.data(this, 'combojs');
 				if (typeof plugin[option] === 'function') {
