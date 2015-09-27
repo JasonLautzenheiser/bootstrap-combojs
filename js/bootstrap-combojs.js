@@ -134,12 +134,12 @@
 			this.$target.val(this.$source.val());
 			this.$source.removeAttr('name');  // Remove from source otherwise form will pass parameter twice.
 
-			var that = this, attributes = this.$source.prop('attributes');
-			$.each(attributes, function () {
-				if (this.name !== 'style')
-					that.$element.attr(this.name, this.value);
-			});
-
+			this.$element.attr('required', this.$source.attr('required'))
+			this.$element.attr('rel', this.$source.attr('rel'))
+			this.$element.attr('title', this.$source.attr('title'))
+			this.$element.attr('class', this.$source.attr('class'))
+			this.$element.attr('tabindex', this.$source.attr('tabindex'))
+			
 			this.$source.removeAttr('tabindex');
 			if (this.$source.attr('disabled') !== undefined)
 				this.disable();
@@ -216,7 +216,7 @@
 		},
 
 		template: function () {
-			return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text" autocomplete="off" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span class="caret" /> <span class="glyphicon glyphicon-remove" /> </span> </div> </div>'
+			return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text" autocomplete="off" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span class="caret" /> <span class="combobox-remove glyphicon glyphicon-remove" /> </span> </div> </div>'
 		},
 
 		matcher: function (item) {
@@ -345,6 +345,7 @@
 			this.$source.val('');
 			this.$target.val('');
 			this.$container.removeClass('combobox-selected');
+			this.$source.trigger('selected',null);
 			this.selected = false;
 		},
 
@@ -488,7 +489,10 @@
 			this.focused = false;
 			var val = this.$element.val();
 			if (this.newOptionsAllowed) {
-				this.$target.val(val);
+				if (this.length === 0)
+				{
+					this.$target.val(val);
+				}
 			}
 			else {
 				if (!this.selected && val !== '') {
