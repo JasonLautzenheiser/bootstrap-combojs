@@ -139,7 +139,7 @@
 			this.$element.attr('title', this.$source.attr('title'))
 			this.$element.attr('class', this.$source.attr('class'))
 			this.$element.attr('tabindex', this.$source.attr('tabindex'))
-			
+
 			this.$source.removeAttr('tabindex');
 			if (this.$source.attr('disabled') !== undefined)
 				this.disable();
@@ -175,14 +175,14 @@
 		},
 
 		setValue: function (item) {
-			var val = item;
-			var mapping = this.map[val];
-			if (mapping) {
-				this.$element.val(this.updater(val)).trigger('change');
-				this.$target.val(mapping).trigger('change');
-				this.$source.val(mapping).trigger('change');
+			if (item && item.toString() in this.map){
+				this.$element.val(this.map[item]);
+				this.$target.val(item);
 				this.$container.addClass('combobox-selected');
-				this.selected = true;
+				this.selected=true;
+			}
+			else if (value === null) {
+				this.clearTarget();
 			}
 		},
 
