@@ -47,9 +47,11 @@ When activating the plugin, you may include an object containing options for the
 
  `template`: Custom function that returns markup for the combobox.
 
- `openOnElementClick`: if `true` the dropdown menu will appear when clicking on the input box.  Defaults to `false`
+ `openOnElementClick`: if `true` the dropdown menu will appear when clicking on the input box.  Defaults to `true`
 
- `fullWidthMenu`: if `true` the dropdown menu will be the full width of the input.  Defaults to `false`
+ `fullWidthMenu`: if `true` the dropdown menu will be the full width of the input.  Defaults to `true`
+ 
+ `newOptionsAllowed`: if `true` the control will allow options that are not valid options in the dropdown.  Defaults to `false`
  
  `placeholder`: Set the placeholder attribute of the input box, removed the `data-placeholder`  Defaults to an empty string.
  

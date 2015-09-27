@@ -29,8 +29,9 @@
 	"use strict";
 	var $window = $(window);
 	var defaults = {
-		openOnElementClick: false,
-		fullWidthMenu     : false,
+		openOnElementClick: true,
+		fullWidthMenu     : true,
+		newOptionsAllowed : false,
 		placeholder       : "",
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
 		item              : '<li><a href="#"></a></li>',
@@ -63,6 +64,7 @@
 			this.matcher = this.options.matcher || this.matcher;
 			this.sorter = this.options.sorter || this.sorter;
 			this.highlighter = this.options.highlighter || this.highlighter;
+			this.newOptionsAllowed = this.options.newOptionsAllowed;
 
 			if (this.options.placeholder !== "")
 				this.$element.attr("placeholder", this.options.placeholder);
@@ -465,10 +467,15 @@
 			var that = this;
 			this.focused = false;
 			var val = this.$element.val();
-			if (!this.selected && val !== '') {
-				this.$element.val('');
-				this.$source.val('').trigger('change');
-				this.$target.val('').trigger('change');
+			if (this.newOptionsAllowed) {
+				this.$target.val(val);
+			}
+			else {
+				if (!this.selected && val !== '') {
+					this.$element.val('');
+					this.$source.val('').trigger('change');
+					this.$target.val('').trigger('change');
+				}
 			}
 			if (!this.mousedover && this.shown) {
 				setTimeout(function () {
