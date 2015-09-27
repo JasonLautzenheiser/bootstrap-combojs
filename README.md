@@ -6,7 +6,7 @@ was bootstrap-combobox by Daniel Farrell.  It had most of what we needed but the
 We could have created another fork and in fact I did at first, but forks tend to get lost here on GitHub (and there are over 250 of the main project) and a lot of great improvements tend to get lost.  o
 I decided to create a new repository, rewrite some of the code and start adding features.  This repo is the result of that.
 
-Full credit goes to Daniel Farrell for much of this code, ideas and design.  I've made many improvements and will continue to do so, but his version is very functional and will serve the purposes for many.
+Full credit goes to [Daniel Farrell](https://github.com/danielfarrell/bootstrap-combobox) for much of this code, ideas and design.  I've made many improvements and will continue to do so, but his version is very functional and will serve the purposes for many.
 
 ## How to use it
 
