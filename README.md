@@ -74,6 +74,10 @@ You may also include these options as data- options on the select element
   `toggle` : toggle the menu
    
   `setValue` : set the value of the combo to the passed in value.  `$('.combobox').combobox('setValue', 'option1');`
+  
+  `remove` : remove items from the list.  
+* no parameter, remove all items - `$('.combobox').combobox('remove');`  
+* number parameter, remove that index of item in list (starting at 1)- `$('.combobox').combobox('remove',2);`
  
 ## Dependencies
 Uses the latest 1.X version of jQuery and the 3.X of bootstrap.

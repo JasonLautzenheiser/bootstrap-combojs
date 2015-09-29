@@ -248,6 +248,19 @@
 			});
 		},
 
+		remove: function(indexes) {
+			var dataType = $.type(indexes)
+
+			if (dataType === "number") {
+				this.$source.find("option").eq(indexes).remove();
+			}
+			else {
+				this.$source.find("option").remove();
+			}
+
+			this.refresh();
+		},
+
 		clear: function () {
 			this.$element.val("");
 			this.$source.val("");
