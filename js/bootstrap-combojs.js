@@ -249,9 +249,23 @@
 		},
 
 		remove: function(indexes) {
-			var dataType = $.type(indexes)
+			var dataType = $.type(indexes), dataLength, x= 0, elems = "", value;
 
-			if (dataType === "number") {
+			if (dataType === "array") {
+				for(dataLength = indexes.length; x <= dataLength; x += 1) {
+					value = indexes[x];
+					if ($.type(value) === "number") {
+						if (elems.length) {
+							elems += ", option:eq(" + value + ")";
+						}
+						else {
+							elems += "option:eq(" + value + ")";
+						}
+					}
+				}
+				this.$source.find(elems).remove();
+			}
+			else if (dataType === "number") {
 				this.$source.find("option").eq(indexes).remove();
 			}
 			else {
