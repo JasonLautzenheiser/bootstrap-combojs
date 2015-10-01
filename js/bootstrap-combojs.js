@@ -33,6 +33,8 @@
 		openOnElementClick: true,
 		fullWidthMenu     : true,
 		newOptionsAllowed : false,
+		animated					: false,
+		animationDuration : 400,
 		placeholder       : "",
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
 		item              : '<li><a href="#"></a></li>',
@@ -187,7 +189,11 @@
 		},
 
 		hide: function () {
-			this.$menu.hide();
+			if (this.options.animated) {
+				this.$menu.slideUp(this.options.animationDuration);
+			} else {
+				this.$menu.hide();
+			};
 			$('.dropdown-menu').off('mousedown', $.proxy(this.scrollSafety, this));
 			this.$element.on('blur', $.proxy(this.blur, this));
 			this.shown = false;
@@ -247,6 +253,8 @@
 				return '<strong>' + match + '</strong>';
 			});
 		},
+
+
 
 		remove: function(indexes) {
 			var dataType = $.type(indexes), dataLength, x= 0, elems = "", value;
@@ -349,8 +357,13 @@
 				.css({
 					top : pos.top + pos.height,
 					left: pos.left
-				})
-				.show();
+				});
+
+			if (this.options.animated) {
+				this.$menu.slideDown(this.options.animationDuration);
+			} else {
+				this.$menu.show();
+			};
 
 			$('.dropdown-menu').on('mousedown', $.proxy(this.scrollSafety, this));
 

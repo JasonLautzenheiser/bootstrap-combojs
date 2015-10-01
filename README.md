@@ -35,25 +35,30 @@ When activating the plugin, you may include an object containing options for the
 
     $('.combobox').combobox({fullWidthMenu: true});
 
- `menu`: Custom markup for the dropdown menu list element.
+ `animation`: if `true` then the popup is animated with slideDown and slideUp, default to `false`
+ 
+ `animationDuration`: duration of animation, defaults to 400 (milliseconds)
+
+ `fullWidthMenu`: if `true` the dropdown menu will be the full width of the input.  Defaults to `true`
+
+ `highlighter`: Custom function for highlighting an `item`. Defaults to bolding the query within a matched item
 
  `item`: Custom markup for the dropdown menu list items.
 
  `matcher`: Custom function with one `item` argument that compares the item to the input. Defaults to matching on the query being a substring of the item, case insenstive
 
- `sorter`: Custom function that sorts a list `items` for display in the dropdown
+ `menu`: Custom markup for the dropdown menu list element.
 
- `highlighter`: Custom function for highlighting an `item`. Defaults to bolding the query within a matched item
-
- `template`: Custom function that returns markup for the combobox.
+ `newOptionsAllowed`: if `true` the control will allow options that are not valid options in the dropdown.  Defaults to `false`
 
  `openOnElementClick`: if `true` the dropdown menu will appear when clicking on the input box.  Defaults to `true`
 
- `fullWidthMenu`: if `true` the dropdown menu will be the full width of the input.  Defaults to `true`
- 
- `newOptionsAllowed`: if `true` the control will allow options that are not valid options in the dropdown.  Defaults to `false`
- 
  `placeholder`: Set the placeholder attribute of the input box, removed the `data-placeholder`  Defaults to an empty string.
+
+ `sorter`: Custom function that sorts a list `items` for display in the dropdown
+
+ `template`: Custom function that returns markup for the combobox.
+
  
 You may also include these options as data- options on the select element
 
@@ -71,13 +76,15 @@ You may also include these options as data- options on the select element
 
     $('.combobox').combobox('toggle');
 
-  `toggle` : toggle the menu
-   
-  `setValue` : set the value of the combo to the passed in value.  `$('.combobox').combobox('setValue', 'option1');`
-  
   `remove` : remove items from the list.  
+
 * no parameter, remove all items - `$('.combobox').combobox('remove');`  
 * number parameter, remove that index of item in list (starting at 1)- `$('.combobox').combobox('remove',2);`
+
+  `setValue` : set the value of the combo to the passed in value.  `$('.combobox').combobox('setValue', 'option1');`
+
+  `toggle` : toggle the menu
+  
  
 ## Dependencies
 Uses the latest 1.X version of jQuery and the 3.X of bootstrap.
