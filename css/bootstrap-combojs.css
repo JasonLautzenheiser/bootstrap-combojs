@@ -40,3 +40,16 @@
 .control-group.success .combobox-container .caret {
   border-top-color: #468847;
 }
+
+.combobox.combobox-disabled, .combobox-options .combobox-disabled {
+  opacity:0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  cursor:default;
+}
+
+.combobox-disabled {
+  color: #999999;
+}

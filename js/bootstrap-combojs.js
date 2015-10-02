@@ -57,6 +57,175 @@
 	combojs.prototype = {
 		constructor: combojs,
 
+		//===========================================
+		// public API methods
+		//===========================================
+
+		disable: function (callback) {
+			this.$element.prop('disabled', true);
+			this.$button.attr('disabled', true);
+			this.disabled = true;
+			this.$container.addClass('combobox-disabled');
+
+			this._callback(callback);
+
+			return this;
+		},
+
+		enable: function (callback) {
+			this.$element.prop('disabled', false);
+			this.$button.attr('disabled', false);
+			this.disabled = false;
+			this.$container.removeClass('combobox-disabled');
+
+			this._callback(callback);
+
+			return this;
+		},
+
+		toggle: function (callback) {
+			if (!this.disabled) {
+				if (this.$container.hasClass('combobox-selected')) {
+					this.clearTarget();
+					this.triggerChange();
+					this.clearElement();
+				} else {
+					if (this.shown) {
+						this.hide();
+					} else {
+						this.clearElement();
+						this.lookup();
+					}
+				}
+			}
+			this._callback(callback);
+			return this;
+		},
+
+		show: function (callback) {
+			var pos = $.extend({}, this.$element.position(), {
+				height: this.$element[0].offsetHeight
+			});
+
+			this.$menu
+				.insertAfter(this.$element)
+				.css({
+					top : pos.top + pos.height,
+					left: pos.left
+				});
+
+			if (this.options.animated) {
+				this.$menu.slideDown(this.options.animationDuration);
+			} else {
+				this.$menu.show();
+			};
+
+			$('.dropdown-menu').on('mousedown', $.proxy(this.scrollSafety, this));
+
+			this.shown = true;
+
+			this._callback(callback);
+
+			return this;
+		},
+
+		focusAndSelect: function (callback) {
+			this.$element.focus().select();
+			this._callback(callback);
+			return this;
+		},
+
+		focus: function (callback) {
+			this.focused = true;
+			this._callback(callback);
+			return this;
+		},
+
+		setValue: function (item, callback) {
+			if (item && item.toString() in this.map){
+				this.$element.val(this.map[item]);
+				this.$target.val(item);
+				this.$container.addClass('combobox-selected');
+				this.selected=true;
+			}
+			else if (value === null) {
+				this.clearTarget();
+			}
+			this._callback(callback);
+			return this;
+		},
+
+		hide: function (callback) {
+			if (this.options.animated) {
+				this.$menu.slideUp(this.options.animationDuration);
+			} else {
+				this.$menu.hide();
+			};
+			$('.dropdown-menu').off('mousedown', $.proxy(this.scrollSafety, this));
+			this.$element.on('blur', $.proxy(this.blur, this));
+			this.shown = false;
+
+			this._callback(callback);
+			return this;
+		},
+
+		refresh: function (callback) {
+			this.source = this.parse();
+			this.options.items = this.source.length;
+
+			this._callback(callback);
+			return this;
+		},
+
+		remove: function(indexes, callback) {
+			var dataType = $.type(indexes), dataLength, x= 0, elems = "", value;
+
+			if (dataType === "array") {
+				for(dataLength = indexes.length; x <= dataLength; x += 1) {
+					value = indexes[x];
+					if ($.type(value) === "number") {
+						if (elems.length) {
+							elems += ", option:eq(" + value + ")";
+						}
+						else {
+							elems += "option:eq(" + value + ")";
+						}
+					}
+				}
+				this.$source.find(elems).remove();
+			}
+			else if (dataType === "number") {
+				this.$source.find("option").eq(indexes).remove();
+			}
+			else {
+				this.$source.find("option").remove();
+			}
+
+			this.refresh();
+
+			this._callback(callback);
+
+			return this;
+		},
+
+		clear: function (callback) {
+			this.$element.val("");
+			this.$source.val("");
+			this.$target.val("");
+			this.$container.removeClass("combobox-selected");
+			this.selected = false;
+
+			this._callback(callback);
+
+			return this;
+		},
+
+
+		//===========================================
+		// private methods
+		//===========================================
+
+
 		init: function () {
 			this.template = this.options.template || this.template;
 			this.$container = this.setup();
@@ -77,8 +246,6 @@
 			this.refresh();
 			this.transferAttributes();
 			this.listen();
-
-
 		},
 
 		setup: function () {
@@ -88,20 +255,6 @@
 			this.$source.hide();
 
 			return combobox;
-		},
-
-		disable: function () {
-			this.$element.prop('disabled', true);
-			this.$button.attr('disabled', true);
-			this.disabled = true;
-			this.$container.addClass('combobox-disabled');
-		},
-
-		enable: function () {
-			this.$element.prop('disabled', false);
-			this.$button.attr('disabled', false);
-			this.disabled = false;
-			this.$container.removeClass('combobox-disabled');
 		},
 
 		parse: function () {
@@ -118,6 +271,7 @@
 					selected = option.text();
 					selectedValue = option.val();
 				}
+
 			});
 			this.map = map;
 			if (selected) {
@@ -176,29 +330,8 @@
 			}
 		},
 
-		setValue: function (item) {
-			if (item && item.toString() in this.map){
-				this.$element.val(this.map[item]);
-				this.$target.val(item);
-				this.$container.addClass('combobox-selected');
-				this.selected=true;
-			}
-			else if (value === null) {
-				this.clearTarget();
-			}
-		},
 
-		hide: function () {
-			if (this.options.animated) {
-				this.$menu.slideUp(this.options.animationDuration);
-			} else {
-				this.$menu.hide();
-			};
-			$('.dropdown-menu').off('mousedown', $.proxy(this.scrollSafety, this));
-			this.$element.on('blur', $.proxy(this.blur, this));
-			this.shown = false;
-			return this;
-		},
+
 
 		lookup: function (event) {
 			this.query = this.$element.val();
@@ -256,40 +389,6 @@
 
 
 
-		remove: function(indexes) {
-			var dataType = $.type(indexes), dataLength, x= 0, elems = "", value;
-
-			if (dataType === "array") {
-				for(dataLength = indexes.length; x <= dataLength; x += 1) {
-					value = indexes[x];
-					if ($.type(value) === "number") {
-						if (elems.length) {
-							elems += ", option:eq(" + value + ")";
-						}
-						else {
-							elems += "option:eq(" + value + ")";
-						}
-					}
-				}
-				this.$source.find(elems).remove();
-			}
-			else if (dataType === "number") {
-				this.$source.find("option").eq(indexes).remove();
-			}
-			else {
-				this.$source.find("option").remove();
-			}
-
-			this.refresh();
-		},
-
-		clear: function () {
-			this.$element.val("");
-			this.$source.val("");
-			this.$target.val("");
-			this.$container.removeClass("combobox-selected");
-			this.selected = false;
-		},
 
 		render: function (items) {
 			var that = this;
@@ -330,46 +429,6 @@
 			prev.addClass('active');
 		},
 
-		toggle: function () {
-			if (!this.disabled) {
-				if (this.$container.hasClass('combobox-selected')) {
-					this.clearTarget();
-					this.triggerChange();
-					this.clearElement();
-				} else {
-					if (this.shown) {
-						this.hide();
-					} else {
-						this.clearElement();
-						this.lookup();
-					}
-				}
-			}
-		},
-
-		show: function () {
-			var pos = $.extend({}, this.$element.position(), {
-				height: this.$element[0].offsetHeight
-			});
-
-			this.$menu
-				.insertAfter(this.$element)
-				.css({
-					top : pos.top + pos.height,
-					left: pos.left
-				});
-
-			if (this.options.animated) {
-				this.$menu.slideDown(this.options.animationDuration);
-			} else {
-				this.$menu.show();
-			};
-
-			$('.dropdown-menu').on('mousedown', $.proxy(this.scrollSafety, this));
-
-			this.shown = true;
-			return this;
-		},
 
 		scrollSafety: function (e) {
 			if (e.target.tagName == 'UL') {
@@ -391,11 +450,6 @@
 
 		triggerChange: function () {
 			this.$source.trigger('change');
-		},
-
-		refresh: function () {
-			this.source = this.parse();
-			this.options.items = this.source.length;
 		},
 
 		elementClick: function () {
@@ -516,14 +570,6 @@
 			e.preventDefault();
 		},
 
-		focusAndSelect: function (e) {
-			this.$element.focus().select();
-		},
-
-		focus: function (e) {
-			this.focused = true;
-		},
-
 		blur: function (e) {
 			var that = this;
 			this.focused = false;
@@ -563,6 +609,16 @@
 
 		mouseleave: function (e) {
 			this.mousedover = false;
+		},
+
+		_callback: function(callback) {
+			var self = this;
+
+			if ($.isFunction(callback)) {
+				callback.call(self);
+			}
+
+			return self;
 		}
 	};
 

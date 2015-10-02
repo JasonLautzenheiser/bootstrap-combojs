@@ -14,7 +14,7 @@ The dependencies are the Bootstrap stylesheet(CSS).  Include it and then the sty
 
 Then just activate the plugin on a normal select box(suggest having a blank option first):
 
-    <select class="combobox">
+    <select class="combo">
       <option></option>
       <option value="PA">Pennsylvania</option>
       <option value="CT">Connecticut</option>
@@ -25,7 +25,7 @@ Then just activate the plugin on a normal select box(suggest having a blank opti
 
     <script type="text/javascript">
       $(document).ready(function(){
-        $('.combobox').combobox();
+        $('.combo').combojs();
       });
     </script>
 
@@ -33,7 +33,7 @@ Then just activate the plugin on a normal select box(suggest having a blank opti
 
 When activating the plugin, you may include an object containing options for the combobox
 
-    $('.combobox').combobox({fullWidthMenu: true});
+    $('.combo').combojs({fullWidthMenu: true});
 
  `animation`: if `true` then the popup is animated with slideDown and slideUp, default to `false`
  
@@ -62,7 +62,7 @@ When activating the plugin, you may include an object containing options for the
  
 You may also include these options as data- options on the select element
 
-    <select class="combobox" data-fullwidthmenu='true' data-openonelementclick='true'>
+    <select class="combo" data-fullwidthmenu='true' data-openonelementclick='true'>
       <option></option>
       <option value="PA">Pennsylvania</option>
       <option value="CT">Connecticut</option>
@@ -74,16 +74,80 @@ You may also include these options as data- options on the select element
 
 ### API
 
-    $('.combobox').combobox('toggle');
+    $('.combo').combojs('toggle');  
+    $('.combo').data("combojs").toggle();  
+    
 
-  `remove` : remove items from the list.  
+###### Clear
+Removes any selected value from dropdown or textbox.
 
-* no parameter, remove all items - `$('.combobox').combobox('remove');`  
-* number parameter, remove that index of item in list (starting at 1)- `$('.combobox').combobox('remove',2);`
+    $('.combo').combojs("clear");
+    
+##### Disable
+disables the menu
 
-  `setValue` : set the value of the combo to the passed in value.  `$('.combobox').combobox('setValue', 'option1');`
+    $('.combo').combojs("disable");
 
-  `toggle` : toggle the menu
+##### Enable
+enables the menu
+
+    $('.combo').combojs("enable");
+
+##### Focus
+set focus to the combo textbox
+
+    $('.combo').combojs("focus");
+
+##### FocusAndSelect
+set focus to the combo textbox and select all the text.
+
+    $('.combo').combojs("focusAndSelect");
+
+
+##### Hide
+Hides the dropdown if it's shown.
+
+    $('.combo').combojs("hide");
+
+
+###### Refresh
+refresh the combo
+
+    `$('.combobox').combojs('refresh');`
+
+
+###### Remove
+Removes items from the list:
+* no parameter, remove all items:
+
+  `$('.combobox').combojs('remove');`
+    
+* number parameter, remove that index of item in list (starting at 1): 
+
+  `$('.combobox').combobox('remove',2);`
+
+  
+* number array, remove the items in the dropdown that match the indexes of items in the array
+
+  `$('.combobox').combobox('remove',[2,3]);`
+
+
+###### setValue
+Set the value of the combo to the passed in value.
+
+    $('.combobox').combobox('setValue', 'option1');    
+
+##### show
+Shows the dropdown if it's not already visible.
+
+    $('.combobox').combobox('show');    
+
+
+##### Toggle
+Toggles between showing and hiding the dropdown menu
+
+    $('.combo').combojs("toggle");
+    
   
  
 ## Dependencies
