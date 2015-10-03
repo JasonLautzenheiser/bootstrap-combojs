@@ -77,6 +77,9 @@
 <script type="text/javascript">
     $("#btnTest").on("click", function() {
         var combo = $("#testID").data("combojs");
+
+        combo.setValue("Tusky Valley");
+
         combo.focusAndSelect(function() {
             if (this.shown) {
                 alert("shown");

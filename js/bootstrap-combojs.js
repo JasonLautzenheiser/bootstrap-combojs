@@ -148,7 +148,7 @@
 				this.$container.addClass('combobox-selected');
 				this.selected=true;
 			}
-			else if (value === null) {
+			else if (item === null) {
 				this.clearTarget();
 			}
 			this._callback(callback);
