@@ -145,6 +145,7 @@
 			if (item && item.toString() in this.map){
 				this.$element.val(this.map[item]);
 				this.$target.val(item);
+				this.$source.val(item);
 				this.$container.addClass('combobox-selected');
 				this.selected=true;
 			}
@@ -261,6 +262,9 @@
 			var that = this, map = {}, source = [], selected = false, selectedValue = '';
 			this.$source.find('option').each(function () {
 				var option = $(this);
+
+				//if (option.prop('disabled')) return;
+
 				if (option.val() === '') {
 					that.options.placeholder = option.text();
 					return;
@@ -271,7 +275,6 @@
 					selected = option.text();
 					selectedValue = option.val();
 				}
-
 			});
 			this.map = map;
 			if (selected) {
