@@ -61,6 +61,19 @@
 		// public API methods
 		//===========================================
 
+		loaditems: function (items, callback) {
+			var that = this;
+			that.remove();
+			$.each(items, function (i, item) {
+				that.$source.append($('<option>', {value: item, text: item}));
+			});
+			that.refresh();
+			that.clear();
+
+			this._callback(callback);
+		},
+
+
 		disable: function (callback) {
 			this.$element.prop('disabled', true);
 			this.$button.attr('disabled', true);
@@ -226,6 +239,24 @@
 		// private methods
 		//===========================================
 
+		_parseJSON: function(data) {
+			return (JSON && JSON.parse && JSON.parse(data)) || $.parseJSON(data);
+		},
+
+		_isJSON: function(data) {
+			var self = this,json;
+
+			try {
+				json = self._parseJSON(data);
+				// Valid JSON
+				return true;
+
+			} catch (e) {
+
+				// Invalid JSON
+				return false;
+			}
+		},
 
 		init: function () {
 			this.template = this.options.template || this.template;

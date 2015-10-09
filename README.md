@@ -29,6 +29,12 @@ Then just activate the plugin on a normal select box(suggest having a blank opti
       });
     </script>
 
+### Callbacks
+
+All public methods include an optional parameter for a callback function that can be called.
+
+    $("#testID").combojs("loaditems", ['january', 'february', 'march', 'april', 'may', 'june', 'july'], function() {alert('Hi Adam');});
+
 ### Options
 
 When activating the plugin, you may include an object containing options for the combobox
@@ -110,13 +116,18 @@ Hides the dropdown if it's shown.
     $('.combo').combojs("hide");
 
 
-###### Refresh
+##### Load Items
+Load an array of items into the combobox, removing anything previously there.
+
+    $('.combo').combojs('loaditems', ['January', 'February', 'March', 'April']);
+
+##### Refresh
 refresh the combo
 
     `$('.combobox').combojs('refresh');`
 
 
-###### Remove
+##### Remove
 Removes items from the list:
 * no parameter, remove all items:
 
@@ -132,7 +143,7 @@ Removes items from the list:
   `$('.combobox').combobox('remove',[2,3]);`
 
 
-###### setValue
+##### setValue
 Set the value of the combo to the passed in value.
 
     $('.combobox').combobox('setValue', 'option1');    
