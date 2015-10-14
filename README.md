@@ -159,7 +159,10 @@ Toggles between showing and hiding the dropdown menu
 
     $('.combo').combojs("toggle");
     
-  
+##### Values 
+Returns the values of the combobox as an array.
+
+    $('.combo').combojs("values", function(values) {alert(values.length);});
  
 ## Dependencies
 Uses the latest 1.X version of jQuery and the 3.X of bootstrap.

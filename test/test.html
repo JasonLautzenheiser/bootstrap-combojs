@@ -54,8 +54,8 @@
 </body>
 <script type="text/javascript">
     $("#btnTest").on("click", function() {
-
-        $("#testID").combojs("loaditems", ['january', 'february', 'march', 'april', 'may', 'june', 'july'], function() {alert('Hi Adam');});
+        var xx = $('#testID').combojs("values",function(data) {
+            alert(data.length)});
     });
 </script>
 

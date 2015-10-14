@@ -234,6 +234,16 @@
 			return this;
 		},
 
+		values: function (returnCallback) {
+
+			var vs = [];
+
+			vs = this.$source.find("option").map(function() {
+				return $(this).val();
+			});
+
+			returnCallback.call(this.$source, vs);
+		},
 
 		//===========================================
 		// private methods
@@ -420,9 +430,6 @@
 				return '<strong>' + match + '</strong>';
 			});
 		},
-
-
-
 
 		render: function (items) {
 			var that = this;
