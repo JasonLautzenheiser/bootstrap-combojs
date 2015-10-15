@@ -53,3 +53,9 @@
 .combobox-disabled {
   color: #999999;
 }
+
+.option-disabled {
+  cursor: default;
+  pointer-events: none;
+  color: #999999 !important;
+}

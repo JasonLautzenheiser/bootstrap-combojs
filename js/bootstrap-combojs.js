@@ -34,6 +34,7 @@
 		fullWidthMenu     : true,
 		newOptionsAllowed : false,
 		animated					: false,
+		hideDisabled			: false,
 		animationDuration : 400,
 		placeholder       : "",
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
@@ -65,7 +66,7 @@
 			var that = this;
 			that.remove();
 			$.each(items, function (i, item) {
-				that.$source.append($('<option>', {value: item, text: item}));
+				that.$source.append($('<option>', {value: item, 4: item}));
 			});
 			that.refresh();
 			that.clear();
@@ -301,21 +302,30 @@
 
 		parse: function () {
 			var that = this, map = {}, source = [], selected = false, selectedValue = '';
+
+
 			this.$source.find('option').each(function () {
 				var option = $(this);
-
-				//if (option.prop('disabled')) return;
 
 				if (option.val() === '') {
 					that.options.placeholder = option.text();
 					return;
 				}
+
+				if (that.options.hideDisabled) {
+					if (option.prop('disabled')) return;
+				}
+				var props = {};
+				props.disabled = option.prop('disabled');
+				props.text = option.text();
+
 				map[option.text()] = option.val();
-				source.push(option.text());
+				source.push(props);
 				if (option.prop('selected')) {
 					selected = option.text();
 					selectedValue = option.val();
 				}
+
 			});
 			this.map = map;
 			if (selected) {
@@ -403,17 +413,17 @@
 		},
 
 		matcher: function (item) {
-			return ~item.toLowerCase().indexOf(this.query.toLowerCase());
+			return ~item.text.toLowerCase().indexOf(this.query.toLowerCase());
 		},
 
 		sorter: function (items) {
 			var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
 
 			while (item = items.shift()) {
-				if (!item.toLowerCase().indexOf(this.query.toLowerCase())) {
+				if (!item.text.toLowerCase().indexOf(this.query.toLowerCase())) {
 					beginswith.push(item);
 				}
-				else if (~item.indexOf(this.query)) {
+				else if (~item.text.indexOf(this.query)) {
 					caseSensitive.push(item);
 				}
 				else {
@@ -435,8 +445,12 @@
 			var that = this;
 
 			items = $(items).map(function (i, item) {
-				i = $(that.options.item).attr('data-value', item);
-				i.find('a').html(that.highlighter(item));
+				i = $(that.options.item).attr('data-value', item.text);
+				var ele = i.find('a');
+				if (item.disabled) {
+					ele.addClass('option-disabled');
+				}
+				ele.html(that.highlighter(item.text));
 				return i[0];
 			});
 
