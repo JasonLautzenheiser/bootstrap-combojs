@@ -47,6 +47,8 @@ When activating the plugin, you may include an object containing options for the
 
  `fullWidthMenu`: if `true` the dropdown menu will be the full width of the input.  Defaults to `true`
 
+ `hideDisabled`: if `true` then disabled options will be hidden from the dropdown.  Defaults to `false`
+ 
  `highlighter`: Custom function for highlighting an `item`. Defaults to bolding the query within a matched item
 
  `item`: Custom markup for the dropdown menu list items.

@@ -1,5 +1,5 @@
 /* =============================================================
- bootstrap-combojs.js v0.1
+ bootstrap-combojs.js v0.2
  =============================================================
  Copyright (c) 2015 - Jason Lautzenheiser
 
@@ -34,10 +34,12 @@
 		fullWidthMenu     : true,
 		newOptionsAllowed : false,
 		animated					: false,
+		hideDisabled			: false,
 		animationDuration : 400,
 		placeholder       : "",
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
 		item              : '<li><a href="#"></a></li>',
+		disabledItem			: '<span class="option-disabled"></span>',
 		selectedValue     : ''
 	};
 
@@ -65,7 +67,7 @@
 			var that = this;
 			that.remove();
 			$.each(items, function (i, item) {
-				that.$source.append($('<option>', {value: item, text: item}));
+				that.$source.append($('<option>', {value: item, 4: item}));
 			});
 			that.refresh();
 			that.clear();
@@ -133,7 +135,7 @@
 				this.$menu.show();
 			};
 
-			$('.dropdown-menu').on('mousedown', $.proxy(this.scrollSafety, this));
+			$('.dropdown-menu').on('optionclick', $.proxy(this.scrollSafety, this));
 
 			this.shown = true;
 
@@ -175,7 +177,7 @@
 			} else {
 				this.$menu.hide();
 			};
-			$('.dropdown-menu').off('mousedown', $.proxy(this.scrollSafety, this));
+			$('.dropdown-menu').off('optionclick', $.proxy(this.scrollSafety, this));
 			this.$element.on('blur', $.proxy(this.blur, this));
 			this.shown = false;
 
@@ -301,21 +303,31 @@
 
 		parse: function () {
 			var that = this, map = {}, source = [], selected = false, selectedValue = '';
+
+
 			this.$source.find('option').each(function () {
 				var option = $(this);
-
-				//if (option.prop('disabled')) return;
 
 				if (option.val() === '') {
 					that.options.placeholder = option.text();
 					return;
 				}
+
+				if (that.options.hideDisabled) {
+					if (option.prop('disabled')) return;
+				}
+
+				var props = {};
+				props.disabled = option.prop('disabled');
+				props.text = option.text();
+
 				map[option.text()] = option.val();
-				source.push(option.text());
+				source.push(props);
 				if (option.prop('selected')) {
 					selected = option.text();
 					selectedValue = option.val();
 				}
+
 			});
 			this.map = map;
 			if (selected) {
@@ -403,17 +415,17 @@
 		},
 
 		matcher: function (item) {
-			return ~item.toLowerCase().indexOf(this.query.toLowerCase());
+			return ~item.text.toLowerCase().indexOf(this.query.toLowerCase());
 		},
 
 		sorter: function (items) {
 			var beginswith = [], caseSensitive = [], caseInsensitive = [], item;
 
 			while (item = items.shift()) {
-				if (!item.toLowerCase().indexOf(this.query.toLowerCase())) {
+				if (!item.text.toLowerCase().indexOf(this.query.toLowerCase())) {
 					beginswith.push(item);
 				}
-				else if (~item.indexOf(this.query)) {
+				else if (~item.text.indexOf(this.query)) {
 					caseSensitive.push(item);
 				}
 				else {
@@ -435,8 +447,18 @@
 			var that = this;
 
 			items = $(items).map(function (i, item) {
-				i = $(that.options.item).attr('data-value', item);
-				i.find('a').html(that.highlighter(item));
+				i = $(that.options.item).attr('data-value', item.text);
+				if (item.disabled) {
+					//i.attr("data-disabled", true);
+					i.addClass("option-disabled");
+					i.text(item.text);
+					var ele = i.find('a');
+					ele.html(that.highlighter(item.text));
+				}
+				else {
+					var ele = i.find('a');
+					ele.html(that.highlighter(item.text));
+				}
 				return i[0];
 			});
 
@@ -450,23 +472,30 @@
 		},
 
 		next: function (event) {
-			var active = this.$menu.find('.active').removeClass('active')
-				, next = active.next();
+			var active = this.$menu.find('.active').removeClass('active'), next = active.next();
 
-			if (!next.length) {
-				next = $(this.$menu.find('li')[0]);
+			//while(next.attr("data-disabled")==="true" || !next.length ) {
+			while(next.hasClass("option-disabled")=== true || !next.length ) {
+				next = next.next();
+
+				if (!next.length) {
+					next = $(this.$menu.find('li')[0]);
+				}
 			}
-
 			next.addClass('active');
 		},
 
 		prev: function (event) {
 			var active = this.$menu.find('.active').removeClass('active'), prev = active.prev();
 
-			if (!prev.length) {
-				prev = this.$menu.find('li').last();
-			}
+			//while(prev.attr("data-disabled")==="true" || !prev.length ) {
+			while(prev.hasClass("option-disabled")==="true" || !prev.length ) {
+				prev = prev.prev();
 
+				if (!prev.length) {
+					prev = this.$menu.find('li').last();
+				}
+			}
 			prev.addClass('active');
 		},
 
@@ -515,7 +544,8 @@
 			this.$menu
 				.on('click', $.proxy(this.click, this))
 				.on('mouseenter', 'li', $.proxy(this.mouseenter, this))
-				.on('mouseleave', 'li', $.proxy(this.mouseleave, this));
+				.on('mouseleave', 'li', $.proxy(this.mouseleave, this))
+				.on('click', 'li', $.proxy(this.optionclick, this));
 
 			this.$button
 				.on('click', $.proxy(this.toggle, this));
@@ -640,6 +670,14 @@
 			e.preventDefault();
 			this.select();
 			this.$element.focus();
+		},
+
+		optionclick: function(e) {
+			if ($(e.toElement).hasClass("option-disabled")) {
+				e.stopPropagation();
+				e.preventDefault();
+				return false;
+			}
 		},
 
 		mouseenter: function (e) {
