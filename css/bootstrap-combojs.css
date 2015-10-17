@@ -41,6 +41,7 @@
   border-top-color: #468847;
 }
 
+
 .combobox.combobox-disabled, .combobox-options .combobox-disabled {
   opacity:0.65;
   filter: alpha(opacity=65);
@@ -54,8 +55,23 @@
   color: #999999;
 }
 
+.dropdown-menu>li>a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap
+}
+
 .option-disabled {
-  cursor: default;
-  pointer-events: none;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  white-space: nowrap
+  cursor: pointer;
+  /*pointer-events: none;*/
   color: #999999 !important;
 }
