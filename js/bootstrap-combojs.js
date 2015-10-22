@@ -67,7 +67,7 @@
 			var that = this;
 			that.remove();
 			$.each(items, function (i, item) {
-				that.$source.append($('<option>', {value: item, 4: item}));
+				that.$source.append($('<option>', {value: item, text: item}));
 			});
 			that.refresh();
 			that.clear();
