@@ -36,6 +36,8 @@
 		animated					: false,
 		hideDisabled			: false,
 		allowEscapeToClose : true,
+		allowEnterToOpen  : false,
+		clearElementOnOpen : false,
 		animationDuration : 400,
 		placeholder       : "",
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
@@ -102,9 +104,12 @@
 		toggle: function (callback) {
 			if (!this.disabled) {
 				if (this.$container.hasClass('combobox-selected')) {
-					this.clearTarget();
-					this.triggerChange();
-					this.clearElement();
+					if (this.options.clearElementOnOpen) {
+						this.clearTarget();
+						this.triggerChange();
+						this.clearElement();
+					}
+					this.lookup();
 				} else {
 					if (this.shown) {
 						this.hide();
@@ -621,6 +626,9 @@
 				case 9: // tab
 				case 13: // enter
 					if (!this.shown) {
+						if (this.options.allowEnterToOpen) {
+							this.toggle();
+						}
 						return;
 					}
 					this.select();

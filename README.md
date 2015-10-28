@@ -41,11 +41,15 @@ When activating the plugin, you may include an object containing options for the
 
     $('.combo').combojs({fullWidthMenu: true});
 
-  `allowEscapeToClose`: if `true` escape will close the dropdown, false will not.  Default to `true`
+ `allowEnterToOpen`: if `true` enter will open the dropdown, false will not.  Default to `false`
+
+ `allowEscapeToClose`: if `true` escape will close the dropdown, false will not.  Default to `true`
  
  `animation`: if `true` then the popup is animated with slideDown and slideUp, default to `false`
  
  `animationDuration`: duration of animation, defaults to 400 (milliseconds)
+
+ `clearElementOnOpen`: this will allow you to customize the behavior on open of combo.  `true` will clear the element, then open, `false` will open it as is (filtered to the current entry), defaults to `false`
 
  `fullWidthMenu`: if `true` the dropdown menu will be the full width of the input.  Defaults to `true`
 
