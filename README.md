@@ -41,6 +41,8 @@ When activating the plugin, you may include an object containing options for the
 
     $('.combo').combojs({fullWidthMenu: true});
 
+  `allowEscapeToClose`: if `true` escape will close the dropdown, false will not.  Default to `true`
+ 
  `animation`: if `true` then the popup is animated with slideDown and slideUp, default to `false`
  
  `animationDuration`: duration of animation, defaults to 400 (milliseconds)

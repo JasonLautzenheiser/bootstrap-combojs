@@ -35,6 +35,7 @@
 		newOptionsAllowed : false,
 		animated					: false,
 		hideDisabled			: false,
+		allowEscapeToClose : true,
 		animationDuration : 400,
 		placeholder       : "",
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
@@ -626,7 +627,7 @@
 					break;
 
 				case 27: // escape
-					if (!this.shown) {
+					if (!this.shown || !this.options.allowEscapeToClose) {
 						return;
 					}
 					this.hide();
