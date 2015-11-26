@@ -43,7 +43,9 @@
 		menu              : '<ul class="typeahead typeahead-long dropdown-menu"></ul>',
 		item              : '<li><a href="#"></a></li>',
 		disabledItem			: '<span class="option-disabled"></span>',
-		selectedValue     : ''
+		selectedValue     : '',
+		addSuffixToName		: false,
+		nameSuffix				: '_auto'
 	};
 
 	function combojs(element, options) {
@@ -358,6 +360,9 @@
 			this.$element.attr('class', this.$source.attr('class'))
 			this.$element.attr('tabindex', this.$source.attr('tabindex'))
 
+			if (this.options.addSuffixToName)
+				this.$element.attr('name', this.$source.attr('id') + this.options.nameSuffix)
+
 			this.$source.removeAttr('tabindex');
 			if (this.$source.attr('disabled') !== undefined)
 				this.disable();
@@ -423,7 +428,7 @@
 		},
 
 		template: function () {
-			return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text" autocomplete="off" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span class="caret" /> <span class="combobox-remove glyphicon glyphicon-remove" /> </span> </div> </div>'
+			return '<div class="combobox-container"> <input type="hidden" /> <div class="input-group"> <input type="text" autocomplete="false" /> <span class="input-group-addon dropdown-toggle" data-dropdown="dropdown"> <span class="caret" /> <span class="combobox-remove glyphicon glyphicon-remove" /> </span> </div> </div>'
 		},
 
 		matcher: function (item) {
