@@ -62,7 +62,7 @@
   font-weight: 400;
   line-height: 1.42857143;
   color: #333;
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 .option-disabled {
@@ -70,7 +70,7 @@
   clear: both;
   font-weight: 400;
   line-height: 1.42857143;
-  white-space: nowrap
+  white-space: nowrap;
   cursor: pointer;
   /*pointer-events: none;*/
   color: #999999 !important;
